@@ -17,6 +17,12 @@ class Kele
 		JSON.parse(response.body)
 	end
 
+	def mentor_availability
+		mentor_id = self.me.fetch("current_enrollment").fetch("mentor_id")
+		response = HTTParty.get(base_url("mentors/#{mentor_id}/student_availability"), headers: {"authorization" => @token})
+		response.to_a
+	end
+
 	private
 
 	def base_url(uri)
