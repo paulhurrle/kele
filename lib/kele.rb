@@ -25,24 +25,24 @@ class Kele
 		response.to_a
 	end
 
-	def get_messages(page = 1) #if no argument is passed, default will be page 1
+	def get_messages(page = nil) #if no argument is passed, default will be nil, which can be evaluated later in the method
 		values = {
-			"page": page,
+			"page": page ||= 1, #sets default value of page argument to 1 if no argument is passed
 		}
-		response = HTTParty.get(base_url("message_threads"), values: values, headers: {"authorization" => @token})
+		response = HTTParty.get(base_url("message_threads?page=#{page}"), values: values, headers: {"authorization" => @token})
 		JSON.parse(response.body)
 	end
 
 	def create_message
+		sender = self.get_me.fetch("email")
 		mentor_id = self.get_me.fetch("current_enrollment").fetch("mentor_id")
 
-		values = {
-			"sender": self.get_me.fetch("email"),
+		values = '{
+			"sender": sender,
 			"recipient_id": mentor_id,
-			"token": "abcd",
 			"subject": "Royale with cheese",
-			"stripped-text": "That's what they call a quarter pounder in France.",
-		}
+			"stripped-text": "That\'s what they call a quarter pounder in France.",
+		}'
 
 		response = HTTParty.post(base_url("messages"), values: values, headers: {"authorization" => @token})
 	end
