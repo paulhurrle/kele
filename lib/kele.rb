@@ -37,14 +37,26 @@ class Kele
 		sender = self.get_me.fetch("email")
 		mentor_id = self.get_me.fetch("current_enrollment").fetch("mentor_id")
 
-		values = '{
-			"sender": sender,
-			"recipient_id": mentor_id,
-			"subject": "Royale with cheese",
-			"stripped-text": "That\'s what they call a quarter pounder in France.",
-		}'
+		values = {
+			sender: sender,
+			recipient_id: mentor_id,
+			subject: "Royale with cheese",
+			'stripped-text' => "That\'s what they call a quarter pounder in France.",
+		}
 
-		response = HTTParty.post(base_url("messages"), values: values, headers: {"authorization" => @token})
+		response = HTTParty.post(base_url("messages"), body: values, headers: {"authorization" => @token})
+	end
+
+	def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, comment)
+		values = {
+		    "assignment_branch": assignment_branch,
+		    "assignment_commit_link": assignment_commit_link,
+		    "checkpoint_id": checkpoint_id,
+		    "comment": comment,
+		    "enrollment_id": self.get_me.fetch("current_enrollment").fetch("id"),
+		}
+
+		response = HTTParty.post(base_url("checkpoint_submissions"), body: values, headers: {"authorization" => @token})
 	end
 
 	private
