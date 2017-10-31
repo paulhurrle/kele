@@ -48,6 +48,13 @@ class Kele
 	end
 
 	def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, comment)
+<<<<<<< HEAD
+=======
+		#checkpoint_id => 2162
+		#assignment_branch => 'checkpoint_submissions'
+		#assignment_commit_link => 'https://github.com/paulhurrle/kele/commits/5'
+		#comment => 'test comment'
+>>>>>>> checkpoint_submissions
 		values = {
 		    "assignment_branch": assignment_branch,
 		    "assignment_commit_link": assignment_commit_link,
